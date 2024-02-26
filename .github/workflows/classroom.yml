@@ -34,7 +34,7 @@ jobs:
         command: pytest
         timeout: 10
         max-score: 100
-    - uses: education/autograding-python-grader@v1
+    - uses: education/autograding-python-grader@main
       id: runner1
     - name: Autograding Reporter
       uses: education/autograding-grading-reporter@v1
