@@ -1,3 +1,4 @@
-uppercase=$(echo "$1" | tr '[:lower:]' '[:upper:]')
+input=$(cat)
+uppercase=$(echo "$input" | tr '[:lower:]' '[:upper:]')
 
 echo "$uppercase"
