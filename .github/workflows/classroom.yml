@@ -34,10 +34,13 @@ jobs:
         command: pytest
         timeout: 10
         max-score: 100
+    - uses: education/autograding-python-grader@v1
+      id: runner1
     - name: Autograding Reporter
       uses: education/autograding-grading-reporter@v1
       env:
         UPPERCASE-TEST_RESULTS: "${{steps.uppercase-test.outputs.result}}"
         PYTHON-TEST_RESULTS: "${{steps.python-test.outputs.result}}"
+        RUNNER1_RESULTS: "${{steps.runner1.outputs.result}}"
       with:
-        runners: uppercase-test,python-test
+        runners: uppercase-test,python-test,runner1
