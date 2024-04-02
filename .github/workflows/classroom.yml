@@ -36,6 +36,8 @@ jobs:
         max-score: 100
     - uses: education/autograding-python-grader@main
       id: runner1
+      with:
+        timeout: 10
     - name: Autograding Reporter
       uses: education/autograding-grading-reporter@v1
       env:
