@@ -1,8 +1,7 @@
 name: Autograding Tests
 'on':
-- push
-- workflow_dispatch
-- repository_dispatch
+  repository_dispatch: 
+  push: 
 permissions:
   checks: write
   actions: read
@@ -10,39 +9,25 @@ permissions:
 jobs:
   run-autograding-tests:
     runs-on: ubuntu-latest
-    if: github.actor != 'github-classroom[bot]'
+    if: github.actor != 'github-classroom-staging[bot]'
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-    - name: Uppercase test
-      id: uppercase-test
+    - name: test
+      id: test
       uses: education/autograding-io-grader@v1
       with:
-        test-name: Uppercase test
-        command: "./bin/shout.sh"
-        input: hello
-        expected-output: HELLO
+        test-name: test
+        setup-command: ''
+        command: test
+        input: ''
+        expected-output: ''
         comparison-method: exact
         timeout: 10
         max-score: 10
-    - name: Python test
-      id: python-test
-      uses: education/autograding-command-grader@v1
-      with:
-        test-name: Python test
-        setup-command: sudo -H pip3 install pytest
-        command: pytest
-        timeout: 10
-        max-score: 100
-    - uses: education/autograding-python-grader@main
-      id: runner1
-      with:
-        timeout: 10
     - name: Autograding Reporter
       uses: education/autograding-grading-reporter@v1
       env:
-        UPPERCASE-TEST_RESULTS: "${{steps.uppercase-test.outputs.result}}"
-        PYTHON-TEST_RESULTS: "${{steps.python-test.outputs.result}}"
-        RUNNER1_RESULTS: "${{steps.runner1.outputs.result}}"
+        TEST_RESULTS: "${{steps.test.outputs.result}}"
       with:
-        runners: uppercase-test,python-test,runner1
+        runners: test
