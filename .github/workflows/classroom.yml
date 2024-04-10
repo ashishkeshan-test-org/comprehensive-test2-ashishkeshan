@@ -13,21 +13,36 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-    - name: test
-      id: test
-      uses: education/autograding-io-grader@v1
+    - name: Test123
+      id: test123
+      uses: education/autograding-command-grader@v1
       with:
-        test-name: test
+        test-name: Test123
         setup-command: ''
-        command: test
-        input: ''
-        expected-output: ''
-        comparison-method: exact
+        command: echo "HERE"
+        timeout: 10
+        max-score: 100
+    - name: Test
+      id: test
+      uses: education/autograding-command-grader@v1
+      with:
+        test-name: Test
+        setup-command: ''
+        command: echo "HERE"
+        timeout: 10
+        max-score: 100
+    - name: Python
+      id: python
+      uses: education/autograding-python-grader@v1
+      with:
         timeout: 10
         max-score: 10
+        setup-command: pip install pytest
     - name: Autograding Reporter
       uses: education/autograding-grading-reporter@v1
       env:
+        TEST123_RESULTS: "${{steps.test123.outputs.result}}"
         TEST_RESULTS: "${{steps.test.outputs.result}}"
+        PYTHON_RESULTS: "${{steps.python.outputs.result}}"
       with:
-        runners: test
+        runners: test123,test,python
